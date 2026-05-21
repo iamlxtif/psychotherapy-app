@@ -5,6 +5,8 @@ import morgan from 'morgan'
 import helmet from 'helmet'
 import { notFound } from './middleware/notFound.js'
 import { errorHandler } from './middleware/errorHandler.js'
+import authRoutes from './routes/auth.routes.js'
+import usersRoutes from './routes/users.routes.js'
 import { config } from './config/env.js'
 
 const app = express()
@@ -21,8 +23,8 @@ app.get('/health', (req, res) => {
 
 
 // ── Routes (added per day) ───────────────────────────────────
-// app.use('/api/auth', authRoutes)       ← Day 24
-// app.use('/api/users', userRoutes)      ← Day 24
+app.use('/api/auth', authRoutes)      
+app.use('/api/users', usersRoutes)     
 // app.use('/api/patients', patientRoutes) ← Day 25
 // app.use('/api/appointments', appointmentRoutes) ← Day 25
 // app.use('/api/sessions', sessionRoutes) ← Day 26
