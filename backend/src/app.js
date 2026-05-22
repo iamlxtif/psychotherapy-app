@@ -7,6 +7,8 @@ import { notFound } from './middleware/notFound.js'
 import { errorHandler } from './middleware/errorHandler.js'
 import authRoutes from './routes/auth.routes.js'
 import usersRoutes from './routes/users.routes.js'
+import patientsRoutes from './routes/patients.routes.js'
+import appointmentsRoutes from './routes/appointments.routes.js'
 import { config } from './config/env.js'
 
 const app = express()
@@ -22,11 +24,11 @@ app.get('/health', (req, res) => {
 })
 
 
-// ── Routes (added per day) ───────────────────────────────────
+// ── Routes 
 app.use('/api/auth', authRoutes)      
 app.use('/api/users', usersRoutes)     
-// app.use('/api/patients', patientRoutes) ← Day 25
-// app.use('/api/appointments', appointmentRoutes) ← Day 25
+app.use('/api/patients', patientsRoutes)
+app.use('/api/appointments', appointmentsRoutes)
 // app.use('/api/sessions', sessionRoutes) ← Day 26
 // app.use('/api/audit', auditRoutes)     ← Day 26
 
