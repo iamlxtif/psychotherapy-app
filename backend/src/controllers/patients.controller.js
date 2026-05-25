@@ -1,5 +1,6 @@
 import { query } from '../config/db.js'
 import { AppError } from '../utils/AppError.js'
+import { createAuditEvent } from '../utils/audit.js'
 
 export const getPatients = async (req, res) => {
     const isAdmin = req.user.role === 'admin'
@@ -24,7 +25,9 @@ export const getPatientById = async (req, res) => {
     const { rows } = await query(
         `select p.*, u.name as therapist_name
         from users u join patients p on u.id = p.therapist_id
-        where p.is_active = true`
+        where p.is_active = true
+        and p.id = $1`,
+        [req.params.id]
     )
 
     const patient = rows[0]
@@ -71,6 +74,14 @@ export const createPatient = async (req, res) => {
         email || null, address || null, assignedTherapistId, notes || null]
     )
 
+    await createAuditEvent({
+      userId: req.user.userId,
+      action: 'CREATE_PATIENT',
+      entity: 'patient',
+      entityId: rows[0].id,
+      payload: { after: rows[0] }
+    }).catch(err => console.error('[AUDIT] Failed:', err.message))
+
     res.status(201).json(rows[0])
 }
 
@@ -111,6 +122,14 @@ export const updatePatient = async (req, res) => {
     [first_name, last_name, date_of_birth, phone, email, address, notes, newTherapistId, req.params.id]
   )
 
+  await createAuditEvent({
+      userId: req.user.userId,
+      action: 'UPDATE_PATIENT',
+      entity: 'patient',
+      entityId: rows[0].id,
+      payload: { before: patient, after: rows[0] }
+    }).catch(err => console.error('[AUDIT] Failed:', err.message))
+
   res.json(rows[0])
 }
 
@@ -128,6 +147,14 @@ export const deletePatient = async (req, res) => {
     'UPDATE patients SET is_active = false, updated_at = NOW() WHERE id = $1',
     [req.params.id]
   )
+
+  await createAuditEvent({
+      userId: req.user.userId,
+      action: 'DELETE_PATIENT',
+      entity: 'patient',
+      entityId: req.params.id,
+      payload: { note: 'Patient deactivated (soft delete)' }
+    }).catch(err => console.error('[AUDIT] Failed:', err.message))
 
   res.status(204).send()
 }

@@ -9,6 +9,8 @@ import authRoutes from './routes/auth.routes.js'
 import usersRoutes from './routes/users.routes.js'
 import patientsRoutes from './routes/patients.routes.js'
 import appointmentsRoutes from './routes/appointments.routes.js'
+import sessionsRoutes from './routes/sessions.routes.js'
+import auditRoutes from './routes/audit.routes.js'
 import { config } from './config/env.js'
 
 const app = express()
@@ -29,8 +31,8 @@ app.use('/api/auth', authRoutes)
 app.use('/api/users', usersRoutes)     
 app.use('/api/patients', patientsRoutes)
 app.use('/api/appointments', appointmentsRoutes)
-// app.use('/api/sessions', sessionRoutes) ← Day 26
-// app.use('/api/audit', auditRoutes)     ← Day 26
+app.use('/api/sessions', sessionsRoutes) 
+app.use('/api/audit', auditRoutes)     
 
 // ── Error Handling ───────────────────────────────────────────
 app.use(notFound)
