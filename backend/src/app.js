@@ -1,5 +1,4 @@
-import './config/env.js' // validates env vars first — before anything else
-import './config/db.js'   
+import './config/env.js' // validates env vars first — before anything else 
 import express from 'express'
 import morgan from 'morgan'
 import helmet from 'helmet'
@@ -38,8 +37,5 @@ app.use('/api/audit', auditRoutes)
 app.use(notFound)
 app.use(errorHandler)
 
-app.listen(config.port, () => {
-  console.log(`🚀 Server running on port ${config.port} (${config.nodeEnv})`)
-})
 
 export default app

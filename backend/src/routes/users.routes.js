@@ -6,7 +6,6 @@ import { asyncHandler } from '../utils/asyncHandler.js'
 
 const router = Router()
 
-// All users routes require admin
 router.use(authenticate)
 router.use(authorize('admin'))
 
