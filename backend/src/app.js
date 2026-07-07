@@ -11,6 +11,8 @@ import appointmentsRoutes from './routes/appointments.routes.js'
 import sessionsRoutes from './routes/sessions.routes.js'
 import auditRoutes from './routes/audit.routes.js'
 import { config } from './config/env.js'
+import swaggerUi from 'swagger-ui-express'
+import swaggerSpec from './config/swagger.js'
 
 const app = express()
 
@@ -23,6 +25,13 @@ app.use(express.json())
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
+
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customSiteTitle: 'Psychotherapy Center API Docs',
+  swaggerOptions: {
+    persistAuthorization: true
+  }
+}))
 
 
 // ── Routes 
