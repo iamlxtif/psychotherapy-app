@@ -57,7 +57,7 @@ router.post('/login', asyncHandler(login))
 
 /**
  *  @swagger
- * /api/auth/me
+ * /api/auth/me:
  *   get:
  *     summary: Get current user profile
  *     tags: [Auth]
