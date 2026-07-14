@@ -14,7 +14,7 @@ export const login = async (req, res) => {
         `select id, email, name, role, password_hash, is_active from users where email = $1`,
         [email]
     )
-
+// uncached
     const user = rows[0]
 
     if(!user) {
