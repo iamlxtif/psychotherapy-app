@@ -1,5 +1,7 @@
 # Root .gitignore
 node_modules/
 .env
+.env.compose
+.env.test
 dist/
 .DS_Store
